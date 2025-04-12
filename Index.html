@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Algebra Factorizer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    input, button {
+      padding: 10px;
+      margin: 10px 0;
+      width: 100%;
+      max-width: 400px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #result {
+      margin-top: 20px;
+      background: #fff;
+      padding: 15px;
+      border-radius: 5px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Algebra Factorizer</h1>
+
+  <input type="text" id="expression" placeholder="Enter expression (e.g. x^2 + 5*x + 6)">
+  <button onclick="factorize()">Factorize</button>
+
+  <div id="result"></div>
+
+  <script>
+    async function factorize() {
+      const expr = document.getElementById('expression').value.trim();
+      const result = document.getElementById('result');
+      result.innerHTML = 'Processing...';
+
+      try {
+        const response = await fetch('https://python-api-epbn.onrender.com/factor', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ expression: expr })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          result.innerHTML = `<strong>Factored:</strong> ${data.factored}`;
+        } else {
+          result.innerHTML = `<span class="error">Error: ${data.error}</span>`;
+        }
+      } catch (error) {
+        result.innerHTML = `<span class="error">Could not connect to server. Please try again later.</span>`;
+      }
+    }
+  </script>
+
+</body>
+    </html>
