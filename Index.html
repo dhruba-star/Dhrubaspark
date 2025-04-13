@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Algebra.. Factorizer</title>
+  <title>Algebra Factorizer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -51,8 +51,9 @@
       color: red;
     }
 
-    .step {
-      margin: 5px 0;
+    ol {
+      text-align: left;
+      padding-left: 20px;
     }
   </style>
 </head>
@@ -83,7 +84,16 @@
         const data = await response.json();
 
         if (response.ok) {
-          result.innerHTML = `<strong>Factored:</strong> ${data.steps.join('<br>')}`;
+          let stepsHTML = '';
+          if (Array.isArray(data.steps) && data.steps.length > 0) {
+            stepsHTML = `<h3>Steps:</h3><ol>` + data.steps.map(step => `<li>${step}</li>`).join('') + `</ol>`;
+          }
+
+          result.innerHTML = `
+            <strong>Input:</strong> ${data.input}<br>
+            <strong>Factored:</strong> ${data.factored}<br>
+            ${stepsHTML}
+          `;
         } else {
           result.innerHTML = `<span class="error">Error: ${data.error}</span>`;
         }
