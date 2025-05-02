@@ -40,7 +40,7 @@
 
   <script>
     document.getElementById('getJokeBtn').addEventListener('click', () => {
-      fetch('https://back-7y6f.onrender.com') // Replace with your Render URL
+      fetch('https://back-7y6f.onrender.com/joke') // Replace with your Render URL
         .then(response => response.json())
         .then(data => {
           document.getElementById('jokeArea').textContent = data.joke;
